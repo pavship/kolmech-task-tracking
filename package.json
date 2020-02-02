@@ -6,6 +6,7 @@
   "author": "PS <pavship@yandex.ru>",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.19.2",
     "dotenv": "^8.2.0",
     "pg": "^7.18.1"
   }
