@@ -1,0 +1,12 @@
+{
+  "name": "kolmech-task-tracking",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/pavship/kolmech-task-tracking.git",
+  "author": "PS <pavship@yandex.ru>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "pg": "^7.18.1"
+  }
+}
