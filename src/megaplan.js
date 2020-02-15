@@ -1,7 +1,7 @@
 const axios = require('axios')
 const crypto = require('crypto')
 
-const megaplan = async ( method, uri ) => {
+const megaplan = async ( method, uri, data ) => {
   const date = new Date().toUTCString()
   const auth_key = process.env.MEGAPLAN_ACCESS_ID + ':' +
     Buffer.from(
@@ -26,6 +26,7 @@ const megaplan = async ( method, uri ) => {
 				'Accept': 'application/json',
 				'Content-Type': 'application/x-www-form-urlencoded'
       },
+      ...data && { data }
     })
 		// console.log('megaplan res.data > ', res.data)
 		return res.data
