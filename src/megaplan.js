@@ -77,7 +77,7 @@ const megaplan_v3 = async ( method, uri, data ) => {
       },
       ...data && { data }
     })
-		console.log('megaplan v3 res.data > ', res.data)
+		// console.log('megaplan v3 res.data > ', res.data)
 		return res.data
     // console.log('megaplan res.data > ', JSON.stringify(res.data, null, 2))
   } catch (err) {

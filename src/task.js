@@ -13,10 +13,20 @@ const getAllTasks = async() => {
 }
 
 const getAllTasksV3 = async() => {
-  const results = await megaplan_v3(
-    'GET',
-    '/api/v3/task?{"fields":["parent"],"filter":{"id":352}}'
-  )
+  let resultSetLength = 1
+  let tasks = []
+  let pageAfterId = 0
+  while (resultSetLength > 0) {
+    const { data } = await megaplan_v3(
+      'GET',
+      '/api/v3/task?{"fields":["parent"],"filter":{"id":352},"limit":100' + (pageAfterId ? `,"pageAfter":{"id":"${pageAfterId}","contentType":"Task"}}` : '') + '}'
+    )
+    if (!data.length) return tasks
+    tasks = [...tasks, ...data]
+    pageAfterId = data[data.length - 1].id
+    console.log('pageAfterId > ', pageAfterId)
+  }
+
   // const results = await Promise.all([0, 100, 200, 300, 400, 500, 600, 700].map(offset =>
   //   megaplan(
   //       'GET',
@@ -24,7 +34,7 @@ const getAllTasksV3 = async() => {
   //     )
   // ))
   // const tasks = results.reduce((tasks, res) => [...tasks, ...res.data.tasks], [])
-  return results.data
+  return tasks
 }
 
 const getOneTask = async() => {
