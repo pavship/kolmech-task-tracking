@@ -5,6 +5,7 @@ require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 const { getAllTasks, getAllTasksV3, getOneTask, trackTask } = require('./src/task')
+const { getAllProjects } = require('./src/project')
 
 app.use((req, res, next) => {
   //console.log('req.headers > ', Object.keys(req.headers))
@@ -82,13 +83,27 @@ app.get('/tasksv3', async(req, res) => {
   console.log('-> user: ', req.auth.user)
   try {
     const tasks = await getAllTasksV3()
-    // const tasks = await getOneTask()
     res.send({ tasks })
   } catch (err) {
     res.status(500).send({
       message: 'Kolmech server error!'
     })
     console.log('/tasksv3 error > ', err)
+  }
+})
+
+app.get('/projects', async(req, res) => {
+  // TODO log client ip
+  console.log('-> incoming request from ip: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress, ' -> /projects')
+  console.log('-> user: ', req.auth.user)
+  try {
+    const projects = await getAllProjects()
+    res.send({ projects })
+  } catch (err) {
+    res.status(500).send({
+      message: 'Kolmech server error!'
+    })
+    console.log('/projects error > ', err)
   }
 })
 
