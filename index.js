@@ -4,7 +4,7 @@ const app = express()
 require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-const { getAllTasks, getOneTask, trackTask } = require('./src/task')
+const { getAllTasks, getAllTasksV3, getOneTask, trackTask } = require('./src/task')
 
 app.use((req, res, next) => {
   //console.log('req.headers > ', Object.keys(req.headers))
