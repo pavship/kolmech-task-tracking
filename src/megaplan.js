@@ -52,28 +52,37 @@ const megaplan_v3 = async ( method, uri, data ) => {
     form.append('password', process.env.MEGAPLAN_PASSWORD)
     form.append('grant_type', 'password')
     const headers = form.getHeaders()
-    console.log('headers > ', headers)
     try {
       const res = await axios.request({
         method: 'post',
         url: 'https://' + process.env.MEGAPLAN_HOST + '/api/v3/auth/access_token',
         headers,
-        // headers: {
-        //   'Accept': 'application/json',
-        //   'Content-Type': 'multipart/form-data'
-        // },
-        // data: {
-        //   username: process.env.MEGAPLAN_USERNAME,
-        //   password: process.env.MEGAPLAN_PASSWORD,
-        //   grant_type: 'password',
-        // }
+        data: form
       })
-      console.log('megaplanv3 res.data > ', res.data)
-      return res.data
-      // console.log('megaplanv3 res.data > ', JSON.stringify(res.data, null, 2))
+      v3credentials.access_token = res.data.access_token
+      v3credentials.expires_at = Date.now() + res.data.expires_in
     } catch (err) {
       console.log('megaplan v3 authorization err.response > ', err.response)
+      return err
     }
+  }
+  try {
+    const res = await axios.request({
+			method: method.toLowerCase(),
+			url: 'https://' + process.env.MEGAPLAN_HOST + uri,
+      headers: {
+        'Authorization': 'Bearer ' + v3credentials.access_token,
+				'Accept': 'application/json',
+				// 'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      ...data && { data }
+    })
+		console.log('megaplan v3 res.data > ', res.data)
+		return res.data
+    // console.log('megaplan res.data > ', JSON.stringify(res.data, null, 2))
+  } catch (err) {
+    console.log('megaplan v3 err.response > ', err.response)
+    return err
   }
 }
 

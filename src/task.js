@@ -13,15 +13,18 @@ const getAllTasks = async() => {
 }
 
 const getAllTasksV3 = async() => {
-  const results = await megaplan_v3()
+  const results = await megaplan_v3(
+    'GET',
+    '/api/v3/task?{"fields":["parent"],"filter":{"id":352}}'
+  )
   // const results = await Promise.all([0, 100, 200, 300, 400, 500, 600, 700].map(offset =>
   //   megaplan(
   //       'GET',
-  //       '/BumsTaskApiV01/Task/list.api?Limit=100&RequestedFields=[Id,Name]&Offset=' + offset
+  //       '/api/v3/task?{"fields":["parent"],"filter":{"id":352}}'
   //     )
   // ))
   // const tasks = results.reduce((tasks, res) => [...tasks, ...res.data.tasks], [])
-  return []
+  return results.data
 }
 
 const getOneTask = async() => {
