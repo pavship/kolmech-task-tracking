@@ -76,6 +76,22 @@ app.get('/tasks', async(req, res) => {
   }
 })
 
+app.get('/tasksv3', async(req, res) => {
+  // TODO log client ip
+  console.log('-> incoming request from ip: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress, ' -> /tasksv3')
+  console.log('-> user: ', req.auth.user)
+  try {
+    const tasks = await getAllTasksV3()
+    // const tasks = await getOneTask()
+    res.send({ tasks })
+  } catch (err) {
+    res.status(500).send({
+      message: 'Kolmech server error!'
+    })
+    console.log('/tasksv3 error > ', err)
+  }
+})
+
 const port = process.env.PORT || 8000
 app.listen(port, () => {
 	console.log(`Listening on port ${port}!...`)

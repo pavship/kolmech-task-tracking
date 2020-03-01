@@ -1,15 +1,10 @@
-const { Client } = require('pg')
-const client = new Client({
+const { Pool } = require('pg')
+const pool = new Pool({
   connectionString: process.env.PGCONSTRING
 })
 
 const pgRequest = async(queryString, attrs) => {
-  await client.connect()
-
-  const res = await client.query(queryString, attrs)
-  
-  await client.end()
-  return res
+  return pool.query(queryString, attrs)
 }
 
 module.exports = { 

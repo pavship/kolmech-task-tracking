@@ -1,0 +1,83 @@
+{
+  "fields": [
+    "name",
+    "finishedTodosCount",
+    "actualTodosCount",
+    "activity",
+    "deadline",
+    "responsible",
+    "owner",
+    "unreadCommentsCount",
+    "isFavorite",
+    "actualStart",
+    "plannedFinish",
+    "actualFinish",
+    "statusChangeTime",
+    "milestones",
+    "deadlineChangeRequest",
+    "previousTasks",
+    "contractor",
+    "nextTasksCount",
+    {
+      "rights": [
+        "edit",
+        "acceptDeadline",
+        "rejectDeadline",
+        "changeDeadline",
+        "requestDeadline"
+      ]
+    },
+    "issuesCount",
+    "actualIssuesCount",
+    "subTasksCount",
+    "actualSubTasksCount"
+  ],
+  "sortBy": [
+    {
+      "fieldName": "activity",
+      "desc": true,
+      "contentType": "SortField"
+    }
+  ],
+  "filter": {
+    "contentType": "TaskFilter",
+    "id": null,
+    "config": {
+      "termGroup": {
+        "join": "and",
+        "terms": [
+          {
+            "comparison": "equals",
+            "value": [
+              {
+                "id": "1000011",
+                "contentType": "Employee"
+              }
+            ],
+            "field": "responsible",
+            "contentType": "FilterTermRef"
+          },
+          {
+            "comparison": "not_equals",
+            "value": [
+              "filter_canceled",
+              "filter_completed",
+              "filter_failed"
+            ],
+            "field": "status",
+            "contentType": "FilterTermEnum"
+          }
+        ],
+        "contentType": "FilterTermGroup"
+      },
+      "filterId": 307,
+      "contentType": "FilterConfig"
+    }
+  },
+  "parent": {
+    "id": "1000061",
+    "contentType": "Project"
+  },
+  "filterHash": "92ea5dacab705ae182b0c90807a717b1",
+  "limit": 50
+}:
