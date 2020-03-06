@@ -39,8 +39,12 @@ const getOneTask = async() => {
 
 const trackTask = async(id, status) => {
   if (status.name === 'accepted') {
-    const res = await pgRequest('INSERT INTO tasklog VALUES ($1, $2)', [id, status.changeTime])
-    console.log(id, status.name, 'res.rowCount > ', res.rowCount)
+    const res = await pgRequest('SELECT 1 FROM tasklog WHERE id = $1 AND "from" = $2', [id, status.changeTime])
+    // const res = await pgRequest('SELECT 1 FROM tasklog WHERE id = $1 AND "from" = $2', [1000332, '2020-03-06T22:03:31+00:00'])
+    console.log('res.rowCount > ', res.rowCount, res.rowCount > 0 ? '> skip' : '')
+    if (res.rowCount > 0) return null
+    const res1 = await pgRequest('INSERT INTO tasklog VALUES ($1, $2)', [id, status.changeTime])
+    console.log(id, status.name, 'res1.rowCount > ', res1.rowCount)
   }
   if (['delayed', 'cancelled', 'expired', 'done', 'completed'].includes(status.name)) {
     const res = await pgRequest('UPDATE tasklog SET "to" = $2 WHERE id = $1 AND "to" IS NULL', [id, status.changeTime])
