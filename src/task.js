@@ -49,9 +49,16 @@ const trackTask = async(id, status) => {
   return null
 }
 
+const getTaskLog = async() => {
+  //const res = await pgRequest(`SELECT id, "from" AT TIME ZONE 'msk' as "from", "to" AT TIME ZONE 'msk' as "to", ROUND((EXTRACT(EPOCH FROM "to"-"from")/3600)::numeric, 2) as "dur" FROM tasklog`)
+  const res = await pgRequest(`SELECT id, "from", "to", ROUND((EXTRACT(EPOCH FROM "to"-"from")/3600)::numeric, 2) as "dur" FROM tasklog`)
+  return res.rows
+}
+
 module.exports = { 
   getAllTasks,
   getAllTasksV3,
   getOneTask,
-  trackTask
+  trackTask,
+  getTaskLog
 }

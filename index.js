@@ -4,7 +4,7 @@ const app = express()
 require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-const { getAllTasks, getAllTasksV3, getOneTask, trackTask } = require('./src/task')
+const { getAllTasks, getAllTasksV3, getOneTask, trackTask, getTaskLog } = require('./src/task')
 const { getAllProjects } = require('./src/project')
 
 app.use((req, res, next) => {
@@ -54,7 +54,7 @@ app.post('/megaplan', async (req, res) => {
 })
 
 app.use(basicAuth({
-  users: { 'admin': 'supersecret' }
+  users: { 'admin': process.env.ADMIN_PASSWORD }
 }))
 
 app.get('/', (req, res) => {
@@ -107,12 +107,22 @@ app.get('/projects', async(req, res) => {
   }
 })
 
+app.get('/tasklog', async(req, res) => {
+  // TODO log client ip
+  console.log('-> incoming request from ip: ', req.headers['x-forwarded-for'] || req.connection.remoteAddress, ' -> /tasklog')
+  console.log('-> user: ', req.auth.user)
+  try {
+    const taskLog = await getTaskLog()
+    res.send({ taskLog })
+  } catch (err) {
+    res.status(500).send({
+      message: 'Kolmech server error!'
+    })
+    console.log('/tasklog error > ', err)
+  }
+})
+
 const port = process.env.PORT || 8000
 app.listen(port, () => {
 	console.log(`Listening on port ${port}!...`)
 })
-
-
-
-
-
